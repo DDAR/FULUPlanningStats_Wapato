@@ -25,15 +25,17 @@ import time
 arcpy.env.overwriteOutput = True
 arcpy.env.qualifiedFieldNames = False
 
+# Figure out the median value of a dataset
 def GetMedian(in_list):
     medianValue = numpy.median(in_list)
     return medianValue
 
+# Figure the Average value of a dataset
 def GetAverage(in_list):
     avgValue = numpy.average(in_list)
     return avgValue
 
-
+# Calculate the Median values for a dataset
 def GetMedianValues(source_fc, value_field):
     use_vals = []
     with arcpy.da.SearchCursor(source_fc, [value_field]) as rows:
@@ -47,6 +49,7 @@ def GetMedianValues(source_fc, value_field):
 
     return (str("%.2f" % median), str("%.2f" % avg))
 
+# Get all values and stats for a data field
 def GetAllList(source_fc, value_field):
     use_vals = []
     with arcpy.da.SearchCursor(source_fc, [value_field]) as rows:
@@ -61,6 +64,7 @@ def GetAllList(source_fc, value_field):
 
     return (str("%.2f" % median), str("%.2f" % avg), str("%.0f" % count), str("%.2f" % total))
 
+# Add up the values
 def findTotals(source_fc, value_field, whereclause):
     use_value = []
     with arcpy.da.SearchCursor(source_fc, [value_field], whereclause) as rows:
@@ -73,6 +77,7 @@ def findTotals(source_fc, value_field, whereclause):
             total = 0
     return total
 
+# Write the stats to a file
 def writeToFile(lyrfile, finFile2):
     matchcount = int(arcpy.GetCount_management('parc_lyr').getOutput(0))
     if matchcount == 0:
